@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle with Numbers and Ticks</title>
+    <style>
+        body {
+            display: flex;
+             
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="numberCircleCanvas" width="600" height="700"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('numberCircleCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Canvas dimensions
+        var centerX = 280 ;
+        var centerY = 350 ;
+        var radius = 150; // Radius equals 80% of the smaller dimension
+        
+        // Function to draw a circle
+        function drawCircle() {
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+
+
+            ctx.beginPath();
+            //ctx.arc(centerX, centerY, radius+50, 0, 2 * Math.PI);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#000000';
+            ctx.strokeRect(10, 10, 2*radius+240, 3*radius+150);
+            ctx.stroke();
+             
+            
+            // Fill the circle with a light color
+            //ctx.fillStyle = 'rgba(52, 152, 219, 0.2)';
+            //ctx.fill();
+
+
+            ctx.beginPath();
+            //ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY,  1.5*radius, 0, 2 * Math.PI);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+
+            ctx.beginPath();
+            //ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, 2, 0, 2 * Math.PI);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+        }
+        
+        // Function to draw numbers along the circumference
+        function drawNumbers() {
+
+            let numElements = 24;
+            let angleIncrement = 2 * Math.PI / numElements;
+            
+            for (let i = 0; i < numElements; i++) {
+                let angle = i * angleIncrement - Math.PI / 2;
+                
+                const x = centerX + (radius+95) * Math.cos(angle);
+                const y = centerY + (radius+95) * Math.sin(angle);
+                
+                // Draw the number at the calculated position
+                ctx.font = '18px Arial';
+                ctx.fillStyle = '#000000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(i, x, y);
+            }
+
+
+            numElements = 11;
+            angleIncrement = 1.37 * Math.PI / numElements;
+            
+            for (let i = 0; i < numElements; i++) {
+
+                let angle = i * angleIncrement - Math.PI / 4 + Math.PI / 4;
+                
+                const x = centerX + (radius+40) * Math.cos(angle);
+                const y = centerY + (radius+40) * Math.sin(angle);
+                
+                // Draw the number at the calculated position
+                ctx.font = '18px Arial';
+                ctx.fillStyle = '#000000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(i*10, x, y);
+            }
+
+
+
+
+        }
+        
+        // Function to draw ticks on the circle
+        function drawTicks() {
+
+            majorTickLength = 15;
+            const minorTickLength = 10;
+            shift = 70
+
+            // Major ticks (align with numbers)
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 24; i++) {
+                let angle = i * (2 * Math.PI / 24) - Math.PI / 2;
+                const x1 = centerX + (radius+shift) * Math.cos(angle);
+                const y1 = centerY + (radius+shift) * Math.sin(angle);
+                const x2 = centerX + (radius+majorTickLength+shift) * Math.cos(angle);
+                const y2 = centerY + (radius+majorTickLength+shift) * Math.sin(angle);
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+            
+            // Minor ticks (between major ticks)
+            ctx.strokeStyle =  '#000000';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 48; i++) { // Double the number of minor ticks
+                let angle = i * (2 * Math.PI / 48) - Math.PI / 2;
+                const x1 = centerX + (radius+shift) * Math.cos(angle);
+                const y1 = centerY + (radius+shift) * Math.sin(angle);
+                const x2 = centerX + (radius+minorTickLength+shift) * Math.cos(angle);
+                const y2 = centerY + (radius+minorTickLength+shift) * Math.sin(angle);
+
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                 
+                
+            }
+
+
+
+            shift = -20
+            majorTickLength = 20;
+
+            
+            // box ticks (align with numbers)
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 7; i++) {
+
+                let angle = i * (4.36 * Math.PI / 21) - Math.PI / 4 + Math.PI / 4;
+                const x1 = centerX + (radius+shift) * Math.cos(angle);
+                const y1 = centerY + (radius+shift) * Math.sin(angle);
+                const x2 = centerX + (radius+majorTickLength+shift ) * Math.cos(angle);
+                const y2 = centerY + (radius+majorTickLength+shift ) * Math.sin(angle);
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                 ctx.stroke();
+            }
+
+
+
+
+
+            shift = 15
+            majorTickLength = 15;
+
+            
+            // box ticks (align with numbers)
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 11; i++) {
+
+                let angle = i * (4 * Math.PI / 32) - Math.PI / 4 + Math.PI / 4;
+                const x1 = centerX + (radius+shift) * Math.cos(angle);
+                const y1 = centerY + (radius+shift) * Math.sin(angle);
+                const x2 = centerX + (radius+majorTickLength+shift ) * Math.cos(angle);
+                const y2 = centerY + (radius+majorTickLength+shift ) * Math.sin(angle);
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                 ctx.stroke();
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        function drowSector(){
+
+            
+            
+
+            centerX = centerX + 290 ;
+            centerY = centerY - 80 ;
+
+            ctx.beginPath();
+            //ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, 20, 1.1 * Math.PI/10 , Math.PI * 1.5);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+
+            ctx.strokeStyle =  '#000000';
+            ctx.lineWidth = 2;
+
+
+            for (let i = 0; i < 2; i++) { 
+
+                let angle = i * ( 2 * Math.PI / 8  ) - ( Math.PI - Math.PI/2) ;
+                const x1 = centerX +  ( 20 ) * Math.cos(angle);
+                const y1 = centerY +  ( 20 ) * Math.sin(angle);
+                const x2 = centerX + (radius) * Math.cos(angle);
+                const y2 = centerY + (radius) * Math.sin(angle);
+
+                //console.log(x1,y1,x2,y2);
+                
+                ctx.beginPath();
+                ctx.lineWidth = 1;
+
+                if (i == 0) {  ctx.moveTo(x1, y1); }
+                if (i == 1) {  ctx.moveTo(x1+5, y1+21); }
+
+                //ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+
+            }
+
+
+
+             
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius/2)+20, 0 - Math.PI/2  ,   Math.PI/4 - Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius/2)+65, 0 - Math.PI/2  ,   Math.PI/4  - Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0 - Math.PI/2  ,   Math.PI/4  - Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+
+
+
+                // ШАРИК НАЧАЛО 
+
+                ctx.beginPath();
+                let angle = 1 * (2 * Math.PI / 48) - Math.PI / 2;
+                ctx.arc(
+                    centerX +  ( (radius/2)+130 ) * Math.cos( angle  ), 
+                    centerY +  ( (radius/2)+40 ) * Math.sin(angle),
+                    22,
+                    0,
+                    2*Math.PI
+                );
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                    ctx.arc(
+                        centerX +  ( (radius/2)+130 ) * Math.cos( angle ) , 
+                        centerY +  ( (radius/2)+40 ) * Math.sin( angle ) ,
+                        2,
+                        0 ,
+                        2*Math.PI
+                    );
+ 
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+
+
+
+                for (let i = 1; i < 5; i++) { 
+
+                    ctx.beginPath();
+                    let angle = i * (1.5 * Math.PI / 24) - Math.PI / 1.9;
+
+                    ctx.arc(
+                        centerX +  ( (radius/2)+40 ) * Math.cos( angle ) , 
+                        centerY +  ( (radius/2)+42 ) * Math.sin( angle ) ,
+                        15,
+                        0 ,
+                        2*Math.PI
+                    );
+                    ctx.lineWidth = 1;
+                    //ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.arc(
+                        centerX +  ( (radius/2)+40 ) * Math.cos( angle ) , 
+                        centerY +  ( (radius/2)+42 ) * Math.sin( angle ) ,
+                        2,
+                        0 ,
+                        2*Math.PI
+                    );
+
+
+
+
+
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 1;
+                    //ctx.stroke();
+
+
+
+
+                }
+
+                ctx.beginPath();
+                //ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, 2, 0, 2 * Math.PI);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+               
+
+                centerY = centerY + 60 ;
+
+                for (let i = 1; i < 3; i++) { 
+
+                    let angle = i * ( 2 * Math.PI / 8  ) - ( Math.PI - Math.PI/2) ;
+                    const x1 = centerX +  ( 20 ) * Math.cos(angle);
+                    const y1 = centerY +  ( 20 ) * Math.sin(angle);
+                    const x2 = centerX + (radius) * Math.cos(angle);
+                    const y2 = centerY + (radius) * Math.sin(angle);
+
+                    //console.log(x1,y1,x2,y2);
+
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    if (i == 1) {  ctx.moveTo(x1-16, y1-6); }
+                    if (i == 2) {  ctx.moveTo(x1-15, y1+20); }
+                    //ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+
+                    }
+
+
+                ctx.beginPath();
+                //ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, 20,   Math.PI/2.5, Math.PI*1.5  );
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.arc(centerX, centerY, (radius/2)+20, 0 - Math.PI/4   ,   Math.PI/2 - Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius/2)+65, 0 - Math.PI/4  ,   Math.PI/2  - Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0 - Math.PI/4  ,   Math.PI/2  - Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.beginPath();
+                //ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, 2, 0, 2 * Math.PI);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                
+                ctx.beginPath();
+                angle = 9 * (2 * Math.PI / 48) - Math.PI / 2;
+                ctx.arc(
+                    centerX +  ( (radius/2)+42 ) * Math.cos( angle  ), 
+                    centerY +  ( (radius/2)+42 ) * Math.sin(angle),
+                    22,
+                    0,
+                    2*Math.PI
+                );
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                    ctx.arc(
+                        centerX +  ( (radius/2)+42 ) * Math.cos( angle ) , 
+                        centerY +  ( (radius/2)+42 ) * Math.sin( angle ) ,
+                        2,
+                        0 ,
+                        2*Math.PI
+                    );
+ 
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+
+
+                centerY = centerY + 60 ;
+
+                for (let i = 2; i < 4; i++) { 
+
+                    let angle = i * ( 2 * Math.PI / 8  ) - ( Math.PI - Math.PI/2) ;
+                    const x1 = centerX +  ( 20 ) * Math.cos(angle);
+                    const y1 = centerY +  ( 20 ) * Math.sin(angle);
+                    const x2 = centerX + (radius) * Math.cos(angle);
+                    const y2 = centerY + (radius) * Math.sin(angle);
+
+                    //console.log(x1,y1,x2,y2);
+
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    if (i == 2) {  ctx.moveTo(x1-6, y1-15); }
+                    if (i == 3) {  ctx.moveTo(x1-15, y1+6); }
+                    //ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+
+                    }
+
+
+                    ctx.beginPath();
+                //ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, 20, Math.PI/2 , 2 * Math.PI - Math.PI/4);
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                
+
+
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.arc(centerX, centerY, (radius/2)+20, 0  ,   Math.PI/4);
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius/2)+65, 0    ,   Math.PI/4);
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0    ,   Math.PI/4);
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.beginPath();
+                //ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, 2, 0, 2 * Math.PI);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+ 
+
+
+                  
+                ctx.beginPath();
+                angle = 15 * (2 * Math.PI / 48) - Math.PI / 2;
+                ctx.arc(
+                    centerX +  ( (radius/2)+42 ) * Math.cos( angle  ), 
+                    centerY +  ( (radius/2)+42 ) * Math.sin(angle),
+                    22,
+                    0,
+                    2*Math.PI
+                );
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                    ctx.arc(
+                        centerX +  ( (radius/2)+42 ) * Math.cos( angle ) , 
+                        centerY +  ( (radius/2)+42 ) * Math.sin( angle ) ,
+                        2,
+                        0 ,
+                        2*Math.PI
+                    );
+ 
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+
+
+                centerY = centerY + 60 ;
+
+                for (let i = 3; i < 5; i++) { 
+
+                    let angle = i * ( 2 * Math.PI / 8  ) - ( Math.PI - Math.PI/2) ;
+                    const x1 = centerX +  ( 20 ) * Math.cos(angle);
+                    const y1 = centerY +  ( 20 ) * Math.sin(angle);
+                    const x2 = centerX + (radius) * Math.cos(angle);
+                    const y2 = centerY + (radius) * Math.sin(angle);
+
+                    //console.log(x1,y1,x2,y2);
+
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+
+                    if (i == 3) {  ctx.moveTo(x1+6, y1-15); }
+                    if (i == 4) {  ctx.moveTo(x1, y1); }
+                    
+                    
+                    //ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.stroke();
+
+                    }
+
+                ctx.beginPath();
+                //ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, 20, Math.PI/2, 2 * Math.PI);
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                angle = 6 * (1.9 * Math.PI / 12) - Math.PI / 2;
+                ctx.arc(
+                    centerX + 15 +( (radius/2) ) * Math.cos( angle ), 
+                    centerY +  ( (radius/2)+41 ) * Math.sin( angle ),
+                    22,
+                    0  ,
+                    2*Math.PI
+                );
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                    ctx.lineWidth = 4;
+                    ctx.arc(
+                        centerX + 15 +( (radius/2) ) * Math.cos( angle ) , 
+                        centerY +  ( (radius/2)+41 ) * Math.sin( angle ) ,
+                        2,
+                        0 ,
+                        2*Math.PI
+                    );
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.arc(centerX, centerY, (radius/2)+20,   Math.PI/4  ,   Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius/2)+65, Math.PI/4    ,   Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, Math.PI/4    ,   Math.PI/2);
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+
+                ctx.beginPath();
+                //ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, 2, 0, 2 * Math.PI);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#000000';
+                ctx.stroke();
+
+             
+
+
+        }
+
+
+        function Counter(){
+
+
+            for (let i = 0; i < 12; i++) { 
+
+                ctx.beginPath();
+                let angle = i * (2 * Math.PI / 12) ;
+                ctx.arc(
+                    centerX +  ( (radius/2)+40 ) * Math.cos( angle ) , 
+                    centerY +  ( (radius/2)+42 ) * Math.sin( angle ) ,
+                    24,
+                    0 ,
+                    2*Math.PI
+                );
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                //ctx.stroke();
+
+
+                ctx.beginPath();
+               
+                ctx.arc(
+                    centerX +  ( (radius/2)+40 ) * Math.cos( angle ) , 
+                    centerY +  ( (radius/2)+42 ) * Math.sin( angle ) ,
+                    2,
+                    0 ,
+                    2*Math.PI
+                );
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 4;
+                //ctx.stroke();
+
+
+
+
+
+
+
+                }
+
+
+            centerXd = centerX + 700    
+            centerYd = centerY  
+            //centerYd =   
+
+            const numElements = 24;
+            const angleIncrement = 2 * Math.PI / numElements;
+            
+            for (let i = 0; i < numElements; i++) {
+                let angle = i * angleIncrement - Math.PI / 2;
+                
+                const x = centerXd + (radius/2+40) * Math.cos(angle);
+                const y = centerYd + (radius/2+42) * Math.sin(angle);
+                
+                // Draw the number at the calculated position
+                ctx.font = '18px Arial';
+                ctx.fillStyle = '#000000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(i, x, y);
+            }
+
+
+
+            ctx.beginPath();
+            //ctx.moveTo(centerX, centerY);
+            ctx.arc(centerXd, centerYd, 2, 0, 2 * Math.PI);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+
+
+            ctx.beginPath();
+            //ctx.moveTo(centerX, centerY);
+            ctx.arc(centerXd, centerYd, radius/2+70, 0, 2 * Math.PI);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#000000';
+            ctx.stroke();
+
+
+
+
+
+        }
+        
+        // Function to draw the complete diagram
+        function drawCompleteDiagram() {
+            drawCircle();
+            drawNumbers();
+            drawTicks();
+
+            //Counter();
+
+            //drowSector();
+        }
+        
+        // Call the function to draw everything
+        drawCompleteDiagram();
+    </script>
+</body>
+</html>
